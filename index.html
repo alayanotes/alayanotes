@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>alaya · coming soon</title>
+<meta name="description" content="alaya: a home for every thought. Handmade notebooks from India, coming soon.">
+<meta name="theme-color" content="#232846">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&family=Karla:wght@400;500&display=swap">
+<style>
+  /* Layout: the plain navy notebook cover, with the alaya mark drawing itself in at the centre */
+  :root {
+    --navy: #232846;       /* cover navy */
+    --navy-deep: #1a1e36;
+    --paper: #F6EFE2;      /* paper */
+    --apricot: #E2A46A;    /* accent on navy */
+    --muted: #B3B4C8;
+    --hair: rgba(246, 239, 226, 0.18);
+    --grid: rgba(246, 239, 226, 0.07);
+    --display: "Fraunces", Georgia, "Times New Roman", serif;
+    --body: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: radial-gradient(ellipse at 50% 42%, var(--navy) 45%, var(--navy-deep) 100%) var(--navy);
+    color: var(--paper);
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* a 5 mm notebook grid, drifting slowly behind everything */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 5mm 5mm;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 30%, transparent 85%);
+            mask-image: radial-gradient(ellipse at 50% 45%, #000 30%, transparent 85%);
+    opacity: 0;
+    animation: gridIn 2s ease-out .2s forwards, drift 7s linear infinite;
+  }
+  @keyframes gridIn { to { opacity: 1; } }
+  @keyframes drift { from { background-position: 0 0; } to { background-position: 5mm 5mm; } }
+  main {
+    position: relative;
+    z-index: 1;
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-block: max(40px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-bottom, 0px));
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .centre {
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 36rem;
+  }
+
+  /* the mark: an arch (a dwelling), restless waves that settle, and a still line */
+  .mark { width: clamp(96px, 26vw, 128px); height: auto; overflow: visible; }
+  .mark .ln {
+    fill: none;
+    stroke: var(--paper);
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.3s cubic-bezier(.55,.1,.3,1) forwards;
+  }
+  .mark .accent { stroke: var(--apricot); }
+  .mark .dot {
+    fill: var(--apricot);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: translateY(-14px) scale(.4);
+    animation: drop .7s cubic-bezier(.3,1.5,.5,1) 1.5s forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes drop { to { opacity: 1; transform: none; } }
+
+  .wordmark {
+    margin: 30px 0 0;
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(3.8rem, 15vw, 6.75rem);
+    line-height: 1;
+    letter-spacing: 0.055em;
+    padding-left: 0.055em;
+  }
+  .wordmark span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: rise .9s ease-out forwards;
+  }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  .tagline {
+    margin: 18px 0 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.25rem, 4.4vw, 1.6rem);
+    color: var(--paper);
+  }
+  .say {
+    margin: 12px 0 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .rule {
+    width: 56px; height: 1px;
+    margin: 34px 0 0;
+    background: var(--hair);
+    transform: scaleX(0);
+    animation: grow .9s ease-out 5.2s forwards;
+  }
+  @keyframes grow { to { transform: scaleX(1); } }
+  .soon {
+    margin: 22px 0 0;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--apricot);
+  }
+  .soon .dots span { animation: pulse 1.6s ease-in-out infinite; }
+  .soon .dots span:nth-child(2) { animation-delay: .2s; }
+  .soon .dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes pulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+  .fade { opacity: 0; animation: rise 1s ease-out forwards; }
+
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 26px;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+  }
+  footer a {
+    color: var(--paper);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hair);
+    padding-bottom: 2px;
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+  footer a:hover, footer a:focus-visible { color: var(--apricot); border-color: var(--apricot); outline: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark .ln, .mark .dot, .wordmark span, .rule, .fade { animation: none !important; opacity: 1; transform: none; stroke-dashoffset: 0; }
+    .soon .dots span { animation: none; opacity: 1; }
+    body::before { animation: none; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="centre" aria-label="alaya is coming soon">
+    <svg class="mark" viewBox="0 0 120 140" role="img" aria-label="The alaya mark">
+      <!-- ground and arch -->
+      <path class="ln" pathLength="1" stroke-width="5" d="M4 136 H116" style="animation-delay:.1s"/>
+      <path class="ln" pathLength="1" stroke-width="5" d="M14 136 V62 A46 46 0 0 1 106 62 V136" style="animation-delay:.35s; animation-duration:1.5s"/>
+      <!-- the dot -->
+      <circle class="dot" cx="60" cy="42" r="5.5"/>
+      <!-- thoughts: restless waves that settle -->
+      <path id="w1" class="ln" pathLength="1" stroke-width="3.5" d="M32 74 Q38 58 44 74 T56 74 T68 74 T80 74 T88 74" style="animation-delay:2s; animation-duration:.9s">
+        <animate attributeName="d" begin="2.6s" dur="1.8s" fill="freeze" calcMode="spline" keySplines=".3 0 .2 1"
+          from="M32 74 Q38 58 44 74 T56 74 T68 74 T80 74 T88 74" to="M32 74 Q38 66 44 74 T56 74 T68 74 T80 74 T88 74"/>
+      </path>
+      <path id="w2" class="ln" pathLength="1" stroke-width="3.5" d="M32 96 Q40 82 48 96 T64 96 T80 96 T88 96" style="animation-delay:2.3s; animation-duration:.9s">
+        <animate attributeName="d" begin="2.9s" dur="1.8s" fill="freeze" calcMode="spline" keySplines=".3 0 .2 1"
+          from="M32 96 Q40 82 48 96 T64 96 T80 96 T88 96" to="M32 96 Q40 91 48 96 T64 96 T80 96 T88 96"/>
+      </path>
+      <!-- stillness -->
+      <path class="ln accent" pathLength="1" stroke-width="3.5" d="M32 118 H88" style="animation-delay:3.9s; animation-duration:.8s"/>
+    </svg>
+
+    <h1 class="wordmark" aria-label="alaya">
+      <span style="animation-delay:3.3s">a</span><span style="animation-delay:3.45s">l</span><span style="animation-delay:3.6s">a</span><span style="animation-delay:3.75s">y</span><span style="animation-delay:3.9s">a</span>
+    </h1>
+
+    <p class="tagline fade" style="animation-delay:4.5s">A home for every thought.</p>
+    <p class="say fade" style="animation-delay:4.9s">ah · lie · ya — Sanskrit for dwelling</p>
+
+    <div class="rule" aria-hidden="true"></div>
+    <p class="soon fade" style="animation-delay:5.6s">Something is coming soon<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>
+  </section>
+
+  <footer class="fade" style="animation-delay:6.2s">
+    <span>Made by hand in India</span>
+    <a href="https://instagram.com/alaya.notes" target="_blank" rel="noopener">@alaya.notes</a>
+    <span>alayanotes.com</span>
+  </footer>
+</main>
+<script>
+  // With reduced motion, skip the wave animation and show the finished mark.
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll(".mark animate").forEach(function (a) {
+      a.parentNode.setAttribute("d", a.getAttribute("to"));
+      a.remove();
+    });
+  }
+</script>
+</body>
+</html>
